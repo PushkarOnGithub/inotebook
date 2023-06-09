@@ -1,0 +1,25 @@
+1.
+mongoose.connect() function do not take a callback function as a argument instead it take a await argument.
+❌const connectToMongo = () => {
+  mongoose.connect(mongoURI,() => {
+    console.log("Connected to Mongo Successfully")
+    });
+};
+✅const connectToMongo = async() => {
+  mongoose.connect(mongoURI,
+    await console.log("Connected to Mongo Successfully")
+  );
+};
+
+2.
+dont use localhost in the URI instead use 127.0.0.1
+❌const mongoURI = "mongodb://localhost:27017/";
+✅const mongoURI = "mongodb://127.0.0.1:27017/";
+
+3.
+if there is undefined logging in the console use middleware in index.js:
+app.use(express.json());
+
+Basically we can deal in json by using this middleware.
+
+4.
