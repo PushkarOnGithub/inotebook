@@ -23,3 +23,7 @@ app.use(express.json());
 Basically we can deal in json by using this middleware.
 
 4.
+Cannot set headers after they are sent to the client
+Dont call send-like function more than once in a function
+
+5.
