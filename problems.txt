@@ -1,0 +1,8 @@
+1.
+digital envelope routines::initialization error
+set:"scripts": {
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
+    }
+
+2.
