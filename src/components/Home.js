@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
+import Addnote from "./Addnote";
+import Notes from "./Notes";
 
-const Home = () => {
+const Home = (props) => {
+  
   return (
-    <div>
-      This is home
-    </div>
-  )
-}
+    <>
+      <Addnote />
+      <Notes />
+    </>
+  );
+};
 
 export default Home;
