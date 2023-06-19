@@ -4,19 +4,19 @@ const fetchuser = require("../middleware/fetchuser");
 const { body, validationResult } = require("express-validator");
 const Note = require("../models/Note");
 
-// Route1: Get all the notes using GET "/api/note/fetchallnotes"  | Login Required
+// Route1: Get all the notes using GET "/api/notes/fetchallnotes"  | Login Required
 
 router.get("/fetchallnotes", fetchuser, async (req, res) => {
   try {
     const notes = await Note.find({ user: req.user.id });
-    res.json(notes);
+    res.json({success: true, notes: notes});
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "1Internal Server Error" });
+    res.status(500).json({success: false, error: "1Internal Server Error" });
   }
 });
 
-// Route2: Post the note using GET "/api/note/addnote"  | Login Required
+// Route2: Post the note using GET "/api/notes/addnote"  | Login Required
 router.post(
   "/addnote",
   fetchuser,
@@ -28,7 +28,7 @@ router.post(
   async (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      return res.status(400).json({ errors: result.array() });
+      return res.status(400).json({success: false, errors: result.array() });
     }
     try {
       const { title, description, tag } = req.body;
@@ -40,10 +40,10 @@ router.post(
       });
       //   res.send({title, description, tag});
       const saveNote = await note.save();
-      res.json(saveNote);
+      res.json({success: true, notes: saveNote});
     } catch (error) {
-      console.log(error.message);
-      res.status(500).json({ error: "2Internal Server Error" });
+      // console.log(error.message);
+      res.status(500).json({success: false, error: "2Internal Server Error" });
     }
   }
 );
@@ -60,17 +60,17 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
 
     // Find the note and update it
     let note = await Note.findById(req.params.id);
-    if(!note){return res.status(404).send("Note Not Found")};
+    if(!note){return res.status(404).send({success: false, error: "Note Not Found"})};
 
     if(note.user.toString() !== req.user.id){
-        return res.status(401).send("Access Denied");
+        return res.status(401).send({success: false, error: "Access Denied"});
     }
     
     note = await Note.findByIdAndUpdate(req.params.id, {$set: newNote}, {new: true});
-    res.json(note);
+    res.json({success: true, note: note});
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "3Internal Server Error" });
+    res.status(500).json({success: false, error: "3Internal Server Error" });
   }
 });
 
@@ -79,17 +79,17 @@ router.delete("/deletenote/:id", fetchuser, async (req, res) => {
   try {
     // Find the note and delete it
     let note = await Note.findById(req.params.id);
-    if(!note){return res.status(404).send("Note Not Found")};
+    if(!note){return res.status(404).send({success: false, error: "Note Not Found"})};
 
     if(note.user.toString() !== req.user.id){
-        return res.status(401).send("Access Denied");
+        return res.status(401).send({success: false, error: "Access Denied"});
     }
     
     res.send("Note Deleted");
     await Note.findByIdAndDelete(req.params.id);
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "4Internal Server Error" });
+    res.status(500).json({success: false, error: "4Internal Server Error" });
   }
 });
 

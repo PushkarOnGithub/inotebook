@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Form = (props) => {
+const EditingForm = (props) => {
     const {onChange, note} = props;
   return (
     <>
@@ -48,4 +48,4 @@ const Form = (props) => {
   )
 }
 
-export default Form;
+export default EditingForm;

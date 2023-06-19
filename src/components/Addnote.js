@@ -1,23 +1,27 @@
-import React, {useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import noteContext from "../context/notes/noteContext";
+import alertContext from "../context/alert/alertContext";
 
-const InputForm = () => {
 
-  const context = useContext(noteContext);
-  const{addNote} = context;
-  const [note, setNote] = useState({title: "", description: "", tag: ""});
-  const handleClick=(event)=>{
+const Addnote = () => {
+  const alertcontext = useContext(alertContext);
+  const {showAlert} = alertcontext;
+  const notecontext = useContext(noteContext);
+  const { addNote } = notecontext;
+  const [note, setNote] = useState({ title: "", description: "", tag: "" });
+  const handleClick = (event) => {
     event.preventDefault();
     addNote(note.title, note.description, note.tag);
-    setNote({title: "", description: "", tag: ""})
-  }
-  const onChange=(event)=>{
-    setNote({...note, [event.target.name]: event.target.value})
-  }
+    setNote({ title: "", description: "", tag: "" });
+    showAlert("Note Added SuccessFully", "success");
+  };
+  const onChange = (event) => {
+    setNote({ ...note, [event.target.name]: event.target.value });
+  };
 
   return (
-    <div className="container my-3">
-        <h2>Add a Note</h2>
+    <div className="container my-3 mt-5">
+      <h2>Add a Note</h2>
       <form onSubmit={handleClick}>
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
@@ -34,7 +38,6 @@ const InputForm = () => {
             required
             minLength={3}
           />
-          
         </div>
         <div className="mb-3">
           <label htmlFor="description" className="form-label">
@@ -76,4 +79,4 @@ const InputForm = () => {
   );
 };
 
-export default InputForm;
+export default Addnote;

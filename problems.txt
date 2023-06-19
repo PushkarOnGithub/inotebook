@@ -6,3 +6,6 @@ set:"scripts": {
     }
 
 2.
+if you are using a context dont forgot to add a corrosponding tag in the App.js file also.
+
+3.

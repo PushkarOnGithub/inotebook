@@ -1,12 +1,20 @@
-import React from "react";
+import React,{useContext} from "react";
 import logo from "../logo.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import noteContext from "../context/notes/noteContext";
 
 const Navbar = () => {
+  const notecontext = useContext(noteContext);
+  const {emptyNotes} = notecontext;
+  const navigate = useNavigate();
   let location = useLocation();
-
+  const handleLogout=()=>{
+    localStorage.removeItem("authToken");
+    navigate("/login");
+    emptyNotes();
+  }
   return (
-    <div>
+    <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
           <Link className="navbar-brand " to="/">
@@ -66,10 +74,17 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
-          </div>
+            <div className="container" style={{"textAlign": "end"}}>
+          {!localStorage.getItem("authToken")?(<>
+              <Link role="button" className="btn btn-primary mx-1 " to="/login">LogIn</Link>
+              <Link role="button" className="btn btn-primary mx-1" to="/signup">SignUp</Link></>)
+        :<button className="btn btn-primary mx-1" onClick={handleLogout}>LogOut</button>}
         </div>
-      </nav>
     </div>
+    </div>
+      </nav>
+
+    </>
   );
 };
 
